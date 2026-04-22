@@ -1,0 +1,13 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --muted: #888;
+  --border: #e8e8e8;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); }
+
+#app { height: 100dvh; display: flex; flex-direction: column; }
