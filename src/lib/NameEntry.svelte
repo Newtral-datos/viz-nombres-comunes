@@ -105,7 +105,7 @@
 <div class="entry-page">
   <div class="entry-inner">
 
-    <h1 class="main-title">Nombres en España</h1>
+    <h1 class="main-title">¿Cuánta gente se llama como tú en España?</h1>
 
     <div class="options-grid">
 
@@ -196,13 +196,13 @@
   }
 
   .main-title {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     color: #1a1a1a;
     text-align: center;
     width: 100%;
-    margin-bottom: 28px;
+    margin-bottom: 48px;
     animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 

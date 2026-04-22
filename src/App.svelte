@@ -14,9 +14,10 @@
   let chosenSex   = 'H';
 
   onMount(async () => {
+    const base = import.meta.env.BASE_URL;
     [data, ages] = await Promise.all([
-      fetch('/data.json').then(r => r.json()),
-      fetch('/ages.json').then(r => r.json()),
+      fetch(`${base}data.json`).then(r => r.json()),
+      fetch(`${base}ages.json`).then(r => r.json()),
     ]);
   });
 
