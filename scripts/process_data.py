@@ -7,10 +7,11 @@ import json, sys
 from pathlib import Path
 import openpyxl
 
-RAW_DIR  = Path('../raw/nacimientos')
-OUT_FILE = Path('public/data.json')
+ROOT     = Path(__file__).parent.parent
+RAW_DIR  = ROOT.parent / 'raw' / 'nacimientos'
+OUT_FILE = ROOT / 'public' / 'data.json'
 
-YEARS = list(range(2002, 2024))
+YEARS = list(range(2002, 2025))
 
 def parse_year(year):
     suffix = str(year)[2:]
@@ -90,8 +91,8 @@ print(f'Guardado {OUT_FILE} ({size/1024:.0f} KB)')
 print(f'Nombres únicos H: {len(result["H"])}  M: {len(result["M"])}')
 
 # --- Generar ages.json (frecuencia y edad media del padrón 2024) ---
-AGES_RAW  = Path('../raw/nombres_por_edad_media.xlsx')
-AGES_FILE = Path('public/ages.json')
+AGES_RAW  = ROOT.parent / 'raw' / 'nombres_por_edad_media_2025.xlsx'
+AGES_FILE = ROOT / 'public' / 'ages.json'
 
 def _is_data_row(r):
     if r[0] is None or r[1] is None:

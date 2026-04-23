@@ -39,9 +39,11 @@
   }
 
   function autoSex(name) {
-    const inH = !!(data?.H?.[name] || ages?.H?.[name]);
-    const inM = !!(data?.M?.[name] || ages?.M?.[name]);
-    return inH ? 'H' : inM ? 'M' : 'H';
+    const freqH = ages?.H?.[name]?.freq ?? (data?.H?.[name] ? 1 : 0);
+    const freqM = ages?.M?.[name]?.freq ?? (data?.M?.[name] ? 1 : 0);
+    if (freqM > freqH) return 'M';
+    if (freqH > 0) return 'H';
+    return 'M';
   }
 
   // Rareza: escala logarítmica sobre el ranking de frecuencia
@@ -133,7 +135,7 @@
               {#each suggestions as name}
                 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
                 <div class="dd-item" on:mousedown|preventDefault={() => pick(name)}>
-                  <span class="dd-name">{toTitle(name)}</span>
+                  <span class="dd-name">{name}</span>
                   {#if rarityLabel(rarityInfo(name)?.logPct)}
                     <span class="dd-rarity" style="color:{rarityColor(rarityInfo(name)?.logPct)}">{rarityLabel(rarityInfo(name)?.logPct)}</span>
                   {/if}
@@ -227,6 +229,8 @@
     border: 1.5px solid #e8e8e8;
     background: #fff;
     animation: flyLeft 0.55s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
+    position: relative;
+    z-index: 1;
   }
 
   /* Card derecha */

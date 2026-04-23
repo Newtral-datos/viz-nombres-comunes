@@ -175,9 +175,9 @@
 
     <!-- Hero -->
     <section class="hero">
-      <h1 class="hero-name">{toTitle(name)}</h1>
+      <h1 class="hero-name">{name}</h1>
       {#if censusData}
-        <p class="hero-text">En España hay <strong>{formatNum(censusData.freq)}</strong> personas llamadas {toTitle(name)}{#if censusData.avg_age}, con una edad media de <strong>{String(censusData.avg_age).replace('.', ',')} años</strong>{/if}.</p>
+        <p class="hero-text">En España hay <strong>{formatNum(censusData.freq)}</strong> personas llamadas <strong>{name}</strong>{#if censusData.avg_age}, con una edad media de <strong>{String(censusData.avg_age).replace('.', ',')} años</strong>{/if}.</p>
       {:else if birthData}
         <p class="hero-text">
           {toTitle(name)} ha aparecido en el top 100 de nombres de recién nacidos en España.
@@ -217,7 +217,7 @@
           <div class="stat-card">
             <div class="stat-value">{formatNum(totalBirths)}</div>
             <div class="stat-label">Bebés registrados</div>
-            <div class="stat-sub">entre 2002 y 2023</div>
+            <div class="stat-sub">entre 2002 y 2024</div>
           </div>
         {/if}
         {#if rarityPct !== null}
@@ -244,7 +244,7 @@
       <section class="chart-section">
         <h2 class="section-title">Evolución en el ranking de nacimientos</h2>
         <p class="section-sub">
-          Top {activeSex === 'H' ? 'niños' : 'niñas'} · España · 2002–2023
+          Top {activeSex === 'H' ? 'niños' : 'niñas'} · España · 2002–2024
         </p>
         <BumpChart {data} {selected} sex={activeSex} />
       </section>
