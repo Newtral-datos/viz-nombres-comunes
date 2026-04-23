@@ -161,6 +161,10 @@
       </div>
 
     </div>
+
+    <button class="explore-link" on:click={() => dispatch('explore')}>
+      Explorar todos los nombres →
+    </button>
   </div>
 </div>
 
@@ -387,6 +391,35 @@
   }
   .cta-map:hover  { background: #01f3b3; color: #1a1a1a; }
   .cta-map:active { transform: scale(0.97); }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(1, 243, 179, 0.4); }
+    50%       { box-shadow: 0 0 0 8px rgba(1, 243, 179, 0); }
+  }
+
+  .explore-link {
+    margin-top: 24px;
+    background: #01f3b3;
+    border: 2px solid #01f3b3;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font);
+    color: #1a1a1a;
+    cursor: pointer;
+    padding: 10px 28px;
+    letter-spacing: -0.01em;
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+    animation: fadeUp 0.45s 0.62s cubic-bezier(0.22, 1, 0.36, 1) both,
+               pulse 2s 1.2s ease-in-out infinite;
+  }
+  .explore-link:hover {
+    background: #00d9a0;
+    border-color: #00d9a0;
+    transform: translateY(-1px);
+    animation: fadeUp 0.45s 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .explore-link:active { transform: scale(0.97); }
 
   /* Mobile */
   @media (max-width: 600px) {

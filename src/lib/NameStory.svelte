@@ -78,6 +78,14 @@
   // Datos según sexo activo
   $: censusData = ages?.[activeSex]?.[name];
   $: birthData  = data?.[activeSex]?.[name];
+
+  // Frecuencia total sumando ambos sexos (el nombre puede existir en H y M)
+  $: totalFreq = (ages?.H?.[name]?.freq ?? 0) + (ages?.M?.[name]?.freq ?? 0);
+  $: totalAvgAge = (() => {
+    const h = ages?.H?.[name]; const m = ages?.M?.[name];
+    if (h && m) return Math.round(((h.freq * h.avg_age) + (m.freq * m.avg_age)) / (h.freq + m.freq) * 10) / 10;
+    return (h ?? m)?.avg_age ?? null;
+  })();
   $: years      = data?.years ?? [];
 
   // Mejor posición histórica
@@ -177,7 +185,7 @@
     <section class="hero">
       <h1 class="hero-name">{name}</h1>
       {#if censusData}
-        <p class="hero-text">En España hay <strong>{formatNum(censusData.freq)}</strong> personas llamadas <strong>{name}</strong>{#if censusData.avg_age}, con una edad media de <strong>{String(censusData.avg_age).replace('.', ',')} años</strong>{/if}.</p>
+        <p class="hero-text">En España hay <strong>{formatNum(totalFreq)}</strong> personas llamadas <strong>{name}</strong>{#if totalAvgAge}, con una edad media de <strong>{String(totalAvgAge).replace('.', ',')} años</strong>{/if}.</p>
       {:else if birthData}
         <p class="hero-text">
           {toTitle(name)} ha aparecido en el top 100 de nombres de recién nacidos en España.
@@ -300,8 +308,8 @@
       <section class="no-births">
         <p>
           Este nombre no ha aparecido en el top 100 de nacimientos entre 2002 y 2023.
-          {#if censusData.avg_age}
-            La mayoría de {toTitle(name)} tiene alrededor de {Math.round(censusData.avg_age)} años.
+          {#if totalAvgAge}
+            La mayoría de {toTitle(name)} tiene alrededor de {Math.round(totalAvgAge)} años.
           {/if}
         </p>
       </section>

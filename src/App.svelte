@@ -2,14 +2,15 @@
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
-  import NameEntry from './lib/NameEntry.svelte';
-  import NameStory from './lib/NameStory.svelte';
+  import NameEntry   from './lib/NameEntry.svelte';
+  import NameStory   from './lib/NameStory.svelte';
+  import NameExplore from './lib/NameExplore.svelte';
 
   const MAP_URL = 'https://newtral-datos.github.io/mapa-nombres-comunes/';
 
   let data        = null;
   let ages        = null;
-  let screen      = 'entry';  // 'entry' | 'story' | 'map'
+  let screen      = 'entry';  // 'entry' | 'story' | 'map' | 'explore'
   let chosenName  = '';
   let chosenSex   = 'H';
 
@@ -27,8 +28,9 @@
     screen     = 'story';
   }
 
-  function handleBack() { screen = 'entry'; }
+  function handleBack()    { screen = 'entry'; }
   function handleOpenMap() { screen = 'map'; }
+  function handleExplore() { screen = 'explore'; }
 </script>
 
 <div class="app-wrap">
@@ -53,7 +55,9 @@
         in:fly={{ y: 28, duration: 340, easing: cubicOut, delay: 80 }}
         out:fade={{ duration: 160 }}>
         {#if screen === 'entry'}
-          <NameEntry {data} {ages} on:discover={handleDiscover} on:openmap={handleOpenMap} />
+          <NameEntry {data} {ages} on:discover={handleDiscover} on:openmap={handleOpenMap} on:explore={handleExplore} />
+        {:else if screen === 'explore'}
+          <NameExplore {ages} on:discover={handleDiscover} on:back={handleBack} />
         {:else}
           <NameStory {data} {ages} name={chosenName} sex={chosenSex} on:back={handleBack} />
         {/if}

@@ -102,7 +102,13 @@
 <div class="chart-wrap" bind:clientWidth={W} bind:this={container}
      on:mousemove={onMouseMove} on:mouseleave={() => tooltip = null} role="img">
 
-  <svg width={W} height={chartH}>
+  <svg width={W} height={chartH} viewBox="0 0 {W} {chartH}">
+    <defs>
+      <clipPath id="bump-plot">
+        <rect x={PAD_LEFT} y={0} width={chartW} height={chartH} />
+      </clipPath>
+    </defs>
+
     <!-- Líneas de rango (grid) -->
     {#each Array.from({length: rankMax - rankMin + 1}, (_, i) => rankMin + i) as rank}
       <line
@@ -125,23 +131,26 @@
       {/if}
     {/each}
 
-    <!-- Líneas de nombres -->
+    <!-- Líneas y puntos de datos (recortados al área del gráfico) -->
+    <g clip-path="url(#bump-plot)">
+      {#each selected as { name, color }}
+        {@const points = getPoints(name)}
+        {@const path   = buildPath(points)}
+        {#if path}
+          <path d={path} fill="none" stroke={color} stroke-width={isMobile ? 2 : 2.5}
+                stroke-linecap="round" stroke-linejoin="round" />
+        {/if}
+        {#each points as pt}
+          {#if pt.rank != null && pt.rank >= rankMin && pt.rank <= rankMax}
+            <circle cx={pt.x} cy={pt.y} r={isMobile ? 2.5 : 3.5} fill={color} />
+          {/if}
+        {/each}
+      {/each}
+    </g>
+
+    <!-- Etiquetas al final (fuera del clip, en el área PAD_RIGHT) -->
     {#each selected as { name, color }}
       {@const points = getPoints(name)}
-      {@const path   = buildPath(points)}
-      {#if path}
-        <path d={path} fill="none" stroke={color} stroke-width={isMobile ? 2 : 2.5}
-              stroke-linecap="round" stroke-linejoin="round" />
-      {/if}
-
-      <!-- Puntos -->
-      {#each points as pt}
-        {#if pt.rank != null && pt.rank >= rankMin && pt.rank <= rankMax}
-          <circle cx={pt.x} cy={pt.y} r={isMobile ? 2.5 : 3.5} fill={color} />
-        {/if}
-      {/each}
-
-      <!-- Etiqueta al final (último año con datos) -->
       {#each [points.filter(p => p.rank != null && p.rank >= rankMin && p.rank <= rankMax).at(-1)].filter(Boolean) as last}
         <text x={last.x + (isMobile ? 6 : 10)} y={last.y} dominant-baseline="middle"
               font-size={isMobile ? 10 : 12} font-weight="600" fill={color}>{toTitle(name)}</text>
